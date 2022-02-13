@@ -12,35 +12,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
     <script src="js/mak-from.js"></script>
     
-      <script type="text/jsx">
+    <script type="text/jsx">
         ReactDOM.render(
-        <React.Fragment>
+            <React.Fragment>
                 <dl>{
-                    from("ProductionLine line").map(
+                        from("ProductionLine line").map(
+                            data =>
+                                <span>
+                                <dt>{data("line.name")}</dt>
+                                <dd><ul>{from("Task t").where("t.line=line").map(
                         data =>
-                            <span>
-                            <dt>{data("line.name")}</dt>
-                            <dd><ul>{from("Task t").where("t.line=line").map(
-                    data =>
+                            <li>
+                            {data("t.customer")}:{data("t.days")}
+                            </li>
+                        )}
+                    </ul>
+                    </dd>
+                    </span>
+                )
+                }</dl>
+
+                <dl><dt>Park:</dt>
+                                <dd><ul>{from("Task t").where("t.line=nil").map(
+                        data =>
                         <li>
                         {data("t.customer")}:{data("t.days")}
                         </li>
                     )}
-                </ul>
-                </dd>
-                </span>
-            )
-            }</dl>
-            <dl><dt>Park:</dt>
-                            <dd><ul>{from("Task t").where("t.line=nil").map(
-                    data =>
-                    <li>
-                    {data("t.customer")}:{data("t.days")}
-                    </li>
-                )}
-                </ul>
-                </dd>
-            </dl>
+                    </ul>
+                    </dd>
+                </dl>
+
             </React.Fragment>
-            , document.body.querySelector("#app"));
-      </script>
+        , document.body.querySelector("#app"));
+    </script>
