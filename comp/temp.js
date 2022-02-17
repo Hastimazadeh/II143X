@@ -1,23 +1,20 @@
 
-import React, { Component }  from 'react'; 
+//import React  from 'react'; 
 
-//import {hitDatabase} from './js/mak-from';
 
-class Temp extends Component {
+class Temp extends React.Component {
 
     constructor() {
       super()
-      this.state = {
-        name: null,
-        tasks: [],
-        cust: null,
-        days: null
-      }
+      this.state = {name:''};
+      this.change;
     }
 
+change(){
+    this.setState({ name: new from("ProductionLine line")})
+}
 
-
-
+//    this.setState({ name: from("ProductionLine line").map((nam)=>(nam("line.name")))})
 
 
 
@@ -25,10 +22,36 @@ class Temp extends Component {
       return (
         <div>
 
+          { this.state.name.change().map((nam)=>(nam("line.name")))}    
+
+        </div>
+      )
+    }
 
 
 
-           {
+
+  }
+  
+
+  /*
+  constructor() {
+      super()
+      this.state = {
+        name: data("line.name"),
+        tasks: [],
+        cust: null,
+        days: null
+        
+      }
+    }
+
+  */ 
+
+
+    /**
+     * 
+     *  {
                         from("ProductionLine line").map(
                             data =>
                                 <span>
@@ -46,16 +69,4 @@ class Temp extends Component {
                 }
 
 
-
-
-
-        </div>
-      )
-    }
-
-
-
-
-  }
-  
-  export default Temp;
+     */
