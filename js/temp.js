@@ -36,7 +36,8 @@ function Temp (props){
 
 function Park (props) {
   return(
-    <dl ><dt class="lineLabel">Park:</dt>
+    <dl>
+      <dt class="lineLabel">Park:</dt>
       <dd><ul class="line">{from("Task t").where("t.line=nil").map(
           data =>
             <Task customer={data("t.customer")} days={data("t.days")}/>

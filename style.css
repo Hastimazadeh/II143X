@@ -1,4 +1,24 @@
 
-  .task{display:inline-block;border-style:solid;border-width:1px;text-align:center;color:red;cursor:move;}
-  .line{float:left;width:80%;height:23px;border-bottom:1px solid black;position:relative;}
-  .lineLabel{float:left;width:40px;padding:3px 0px;}
+  .task{
+    display:inline-block;
+    border-style:solid;
+    border-width:1px;
+    text-align:center;
+    color:red;
+    cursor:move;
+  }
+
+  .line{
+    float:left;
+    width:80%;
+    height:23px;
+    border-bottom:1px solid black;
+    position:relative;
+    color:blue;
+  }
+  
+  .lineLabel{
+    /*float:left;*/
+    width:40px;
+    padding:3px 0px;
+  }
