@@ -22,3 +22,14 @@
     width:40px;
     padding:3px 0px;
   }
+
+  .table{
+    /*display: inline-block;
+    float:left;
+
+    padding:3px 0px;
+    width:40px;*/
+   border-spacing: 18px 2px;
+   border-collapse: separate;
+
+  }

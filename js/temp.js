@@ -13,7 +13,7 @@ function Temp (props){
 
   return (
     <React.Fragment>
-      <dl  >{
+      <dl>{
         from("ProductionLine line").map(
           data => 
             <span>
@@ -27,6 +27,7 @@ function Temp (props){
         )
       }</dl>
       <Park/>
+      <Table/>
     </React.Fragment>
   )
 
@@ -54,5 +55,26 @@ function Task(props){
 }
   
 function Table(props){
+  return(
+    <table class="table">
+      <thead>
+        <tr>
+          <th> Customer </th>
+          <th>line</th>
+          <th>start date</th>
+          <th>days</th>
+          <th>end date</th>
+        </tr>
+      </thead> 
+
+      <tbody>{from("ProductionLine line").map(data=> 
+        <tr>
+          <td>  </td>
+          <td> </td>
+        </tr>
+      )}</tbody>
+    </table>
+  )
+
 }
   
