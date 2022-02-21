@@ -14,17 +14,7 @@ function Temp (props){
   return (
     <React.Fragment>
       <dl>{
-        from("ProductionLine line").map(
-          data => 
-            <span>
-                <dt class="lineLabel">{data("line.name")}</dt>
-                <dd><ul class="line" >{from("Task t").where("t.line=line").map(
-                    data =>
-                      <Task customer={data("t.customer")} days={data("t.days")}/>
-                  )}
-                </ul></dd>
-            </span>
-        )
+        from("ProductionLine line").map(representLine)
       }</dl>
       <Park/>
       <Table/>
@@ -34,23 +24,27 @@ function Temp (props){
 
 }
 
+function representLine(data){
+  return <span>
+    <dt class="lineLabel">{data("line.name")}</dt>
+    <dd><ul class="line" >{from("Task t").where("t.line=line").map(Task)}
+    </ul></dd>
+  </span>
+}
 
 function Park (props) {
   return(
     <dl>
       <dt class="lineLabel">Park:</dt>
-      <dd><ul class="line">{from("Task t").where("t.line=nil").map(
-          data =>
-            <Task customer={data("t.customer")} days={data("t.days")}/>
-        )}
+      <dd><ul class="line">{from("Task t").where("t.line=nil").map(Task)}
       </ul></dd>
     </dl>
   )
 }
 
-function Task(props){
+function Task(data){
   return <li class="task">
-    {props.customer}:{props.days}
+    {data("t.customer")} : {data("t.days")}
   </li>
 }
   
@@ -59,7 +53,7 @@ function Table(props){
     <table class="table">
       <thead>
         <tr>
-          <th> Customer </th>
+          <th>customer</th>
           <th>line</th>
           <th>start date</th>
           <th>days</th>
@@ -67,12 +61,13 @@ function Table(props){
         </tr>
       </thead> 
 
-      <tbody>{from("ProductionLine line").map(data=> 
-        <tr>
-          <td>  </td>
+      <tbody >
+        <tr>  
+          <td> {"t.customer"} </td>
           <td> </td>
         </tr>
-      )}</tbody>
+        
+      </tbody>
     </table>
   )
 
