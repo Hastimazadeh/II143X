@@ -61,12 +61,12 @@ function Table(props){
         </tr>
       </thead> 
 
-      <tbody >
+      <tbody > {from("Task t").map(data=>
         <tr>  
-          <td> {"t.customer"} </td>
+          <td> {data("t.customer")} </td>
           <td> </td>
         </tr>
-        
+        )}
       </tbody>
     </table>
   )
