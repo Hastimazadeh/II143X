@@ -64,7 +64,7 @@ function Table(props){
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
           <td> {data("t.customer")} </td>
-          <td> </td>
+          <td> {data("t.line.name")}</td>
         </tr>
         )}
       </tbody>
