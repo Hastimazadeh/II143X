@@ -96,24 +96,3 @@ function Table(props){
   )
 
 }
-  
-//data("t.startDate")
-//date = new Date(data("t.startDate")).toString()
-//<Date millis={data("t.startDate")}/>
-//"dateAdd(t.startDate, t.days, 'day')"
-//          <td> {<Datee millis={data("t.endDate")}/>} </td>
-
-
-/*
-
-function EndDate(props){
-  const date = new Date(props.millis)
-  const endDate = date.setDate(date.getDate() + props.days.getDate)
-  const finalDate = new Date (endDate)
-  return(
-    <span>
-      {finalDate.toString()}
-    </span>
-  )
-}
-*/ 
