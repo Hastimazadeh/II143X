@@ -2,6 +2,8 @@ function Temp (props){
 
   const [count, setCount] = React.useState(0);
 
+  
+
   React.useEffect(() => {
     setInterval(() => {
       //setCount(prevCount => prevCount + 1);
@@ -47,6 +49,16 @@ function Task(data){
     {data("t.customer")} : {data("t.days")}
   </li>
 }
+
+function Datee(props){
+  const date = new Date(props.millis)
+  return(
+    <span>
+      {date.toString().slice(0,15)}
+    </span>
+
+  )
+}
   
 function Table(props){
   return(
@@ -65,9 +77,9 @@ function Table(props){
         <tr>  
           <td> {data("t.customer")} </td>
           <td> {data("t.line.name")} </td>
-          <td> {data("t.startDate")} </td>
+          <td> {<Datee millis={data("t.startDate")}/>} </td>
           <td> {data("t.days")} </td>
-          <td> {data("t.endDate")} </td>
+          <td> {<Datee millis={data("t.endDate")}/>} </td>
         </tr>
         )}
       </tbody>
@@ -76,3 +88,6 @@ function Table(props){
 
 }
   
+//data("t.startDate")
+//date = new Date(data("t.startDate")).toString()
+//<Date millis={data("t.startDate")}/>
