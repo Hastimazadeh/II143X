@@ -18,25 +18,23 @@ function Temp (props){
       <dl>{
         from("ProductionLine line").map(representLine)
       }</dl>
-      <Park/>
+      <Park />
       <Table/>
     </React.Fragment>
   )
-
-
 }
 
 function representLine(data){
-  return <span>
-    <dt class="lineLabel">{data("line.name")}</dt>
+  return <div style={{overflow:"hidden"}} >
+    <dt  class="lineLabel">{data("line.name")}</dt>
     <dd><ul class="line" >{from("Task t").where("t.line=line").map(Task)}
     </ul></dd>
-  </span>
+  </div>
 }
 
 function Park (props) {
   return(
-    <dl>
+    <dl style={{overflow:"hidden"}}>
       <dt class="lineLabel">Park:</dt>
       <dd><ul class="line">{from("Task t").where("t.line=nil").map(Task)}
       </ul></dd>
@@ -45,7 +43,7 @@ function Park (props) {
 }
 
 function Task(data){
-  return <li class="task">
+  return <li class="task" >
     {data("t.customer")} : {data("t.days")}
   </li>
 }
@@ -71,14 +69,14 @@ function EndDate(props){
   
 function Table(props){
   return(
-    <table class="table">
+    <table class="table" >
       <thead>
         <tr>
-          <th>customer</th>
-          <th>line</th>
-          <th>start date</th>
-          <th>days</th>
-          <th>end date</th>
+          <th>Customer</th>
+          <th>Line</th>
+          <th>Start Date</th>
+          <th>Days</th>
+          <th>End Date</th>
         </tr>
       </thead> 
 
@@ -96,3 +94,4 @@ function Table(props){
   )
 
 }
+//style={{position:"absolute"}}

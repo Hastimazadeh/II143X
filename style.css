@@ -6,21 +6,30 @@
     text-align:center;
     color:red;
     cursor:move;
+    position:absolute; /*overlapping*/
+    /*left: 10px;
+      top: 15px;*/
   }
 
   .line{
     float:left;
     width:80%;
     height:23px;
+    /*border-width:1px;*/
     border-bottom:1px solid black;
     position:relative;
     color:blue;
+    overflow:hidden;
   }
   
   .lineLabel{
     /*float:left;*/
     width:40px;
     padding:3px 0px;
+    position:relative;
+    overflow:hidden;
+
+
   }
 
   .table{
