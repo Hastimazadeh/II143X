@@ -50,23 +50,29 @@ function Task(data){
 
 function StartDate(props){
   const date = new Date(props.millis)
-  return(
-    <span>
-      {date.toString().slice(0,15)}
-    </span>
+  if(date.toString().slice(0,15)=="Invalid Date") 
+    return <span> </span>;
+  else
+    return(
+      <span>
+        {date.toString().slice(0,15)}
+      </span>
 
-  )
+    )
 }
 
 function EndDate(props){
   const date = new Date(props.millis+ (props.days)*86400000)  
-  return(
-    <span>
-      {date.toString().slice(0,15)}
-    </span>
-  )
+  if(date.toString().slice(0,15)=="Invalid Date") 
+    return <span> </span>;
+  else
+    return(
+      <span>
+        {date.toString().slice(0,15)}
+      </span>
+    )
 }
-  
+
 function Table(props){
   return(
     <table class="table" >
