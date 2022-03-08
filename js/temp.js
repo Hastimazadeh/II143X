@@ -35,7 +35,10 @@ function representLine(data){
 function Park (props) {
   return <div style={{overflow:"hidden"}}>
       <span class="lineLabel">Park:</span>
-      <div class="line">{from("Task t").where("t.line=nil").map(Task)}
+      <div class="line">
+        {/* <div style={{float:"left"}}> */}
+          {from("Task t").where("t.line=nil").map(Task)}
+        {/* </div> */}
       </div>
     </div>
   
@@ -44,9 +47,9 @@ function Park (props) {
 function Task(data){
   console.log(data("t.customer"));
   let left = "100" + "px";
-  return <li class="task" style={{left: left}} >
+  return <div class="task" style={{left: left}} >
     {data("t.customer")} : {data("t.days")}
-  </li>
+  </div>
 }
 
 function StartDate(props){
@@ -89,10 +92,10 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> {data("t.customer")} </td>
+          <td> <input type="text" onkeyup="synch()" value={data("t.customer")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> {data("t.days")} </td>
+          <td> <input type="text" onkeyup="synch()" value={data("t.days")}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
