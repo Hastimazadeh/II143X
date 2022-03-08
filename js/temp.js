@@ -55,9 +55,12 @@ function Task(data){
   let width = data("t.days") + "px";
   
   let left = differenceDays.toString() + "px";
-  return <div class="task" style={{left: left, width: width}} >
-    {data("t.customer")} 
-  </div>
+  
+  if(data("t.line=nil"))
+    return <div class="task" style={{left: left, width: width,  position:"relative"}}> {data("t.customer")} </div>
+  else return <div class="task" style={{left: left, width: width}} >
+      {data("t.customer")} 
+    </div>
 }
 
 function StartDate(props){
