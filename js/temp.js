@@ -32,7 +32,7 @@ function representLine(data){
   </div>
 }
 
-function Park (props) {
+function Park(props) {
   return <div style={{overflow:"hidden"}}>
       <span class="lineLabel">Park</span>
       <div class="line">
@@ -73,7 +73,6 @@ function StartDate(props){
       <span>
         {date.toString().slice(0,15)}
       </span>
-
     )
 }
 
@@ -114,5 +113,4 @@ function Table(props){
       </tbody>
     </table>
   )
-
 }
