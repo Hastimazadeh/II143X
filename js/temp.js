@@ -36,9 +36,7 @@ function Park (props) {
   return <div style={{overflow:"hidden"}}>
       <span class="lineLabel">Park:</span>
       <div class="line">
-        {/* <div style={{float:"left"}}> */}
-          {from("Task t").where("t.line=nil").map(Task)}
-        {/* </div> */}
+          {from("Task t").where("t.line=nil").map(Task)} 
       </div>
     </div>
   
