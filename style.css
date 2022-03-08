@@ -7,12 +7,12 @@
     color:red;
     cursor:move;
     position:absolute; /*overlapping*/
-    overflow:hidden;
+    /*overflow:hidden;*/
    
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 1.42857143;
-    font-size: 14px;
-
+    /*font-size: 14px;*/
+    
+    height:21px;
   }
 
   .line{
@@ -22,13 +22,11 @@
     /*border-width:1px;*/
     border-bottom:1px solid black;
     position:relative;
-    color:blue;
     overflow:hidden;
   
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 1.42857143;
-    font-size: 14px;
-
+    /*font-size: 14px;*/
+    display: block;
   }
   
   .lineLabel{
@@ -39,9 +37,8 @@
     overflow:hidden;
     
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 1.42857143;
+    line-height: 1.42857143; /*might be necesarry*/
     font-size: 14px;
-
   }
 
   .table{
@@ -54,6 +51,6 @@
     border-collapse: separate;
     
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 1.42857143;
+    font-size: 16px;
 
   }

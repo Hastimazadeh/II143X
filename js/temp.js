@@ -34,16 +34,15 @@ function representLine(data){
 
 function Park (props) {
   return <div style={{overflow:"hidden"}}>
-      <span class="lineLabel">Park:</span>
+      <span class="lineLabel">Park</span>
       <div class="line">
-          {from("Task t").where("t.line=nil").map(Task)} 
+          {from("Task t").where("t.line=nil").map(TaskPark)} 
       </div>
     </div>
   
 }
 
 function Task(data){
-  
   let startDateMillis = data("t.startDate");
   let firstDate = new Date("01/01/2021 00:00:00");
   let firstDateMillis =  firstDate.getTime(); 
@@ -51,14 +50,18 @@ function Task(data){
   let differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
 
   let width = data("t.days") + "px";
-  
   let left = differenceDays.toString() + "px";
-  
-  if(data("t.line=nil"))
-    return <div class="task" style={{left: left, width: width,  position:"relative"}}> {data("t.customer")} </div>
-  else return <div class="task" style={{left: left, width: width}} >
-      {data("t.customer")} 
-    </div>
+
+  return <div class="task" style={{left: left, width: width ,display:"inline"}}>
+    {data("t.customer")} 
+  </div>
+}
+
+function TaskPark(data){
+  let parkWidth = data("t.days") + "px";
+  return <div class="task" style={{  width: parkWidth , position:"relative" }}> 
+    {data("t.customer")} 
+  </div>
 }
 
 function StartDate(props){
@@ -101,10 +104,10 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> <input type="text" onkeyup="synch()" size="10" value={data("t.customer")}/></td>
+          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> <input type="text" onkeyup="synch()" size="5" value={data("t.days")}/> </td>
+          <td> <input type="text"  style={{font:"inherit"}} size="5" value={data("t.days")}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
