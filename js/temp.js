@@ -92,10 +92,10 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> <input type="text" onkeyup="synch()" value={data("t.customer")}/></td>
+          <td> <input type="text" onkeyup="synch()" size="10" value={data("t.customer")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> <input type="text" onkeyup="synch()" value={data("t.days")}/> </td>
+          <td> <input type="text" onkeyup="synch()" size="5" value={data("t.days")}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
