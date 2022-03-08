@@ -116,4 +116,3 @@ function Table(props){
   )
 
 }
-//style={{position:"absolute"}}
