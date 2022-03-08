@@ -15,9 +15,9 @@ function Temp (props){
 
   return (
     <React.Fragment>
-      <dl>{
+      <div>{
         from("ProductionLine line").map(representLine)
-      }</dl>
+      }</div>
       <Park />
       <Table/>
     </React.Fragment>
@@ -26,24 +26,25 @@ function Temp (props){
 
 function representLine(data){
   return <div style={{overflow:"hidden"}} >
-    <dt  class="lineLabel">{data("line.name")}</dt>
-    <dd><ul class="line" >{from("Task t").where("t.line=line").map(Task)}
-    </ul></dd>
+    <span  class="lineLabel">{data("line.name")}</span>
+    <div class="line" >{from("Task t").where("t.line=line").map(Task)}
+    </div>
   </div>
 }
 
 function Park (props) {
-  return(
-    <dl style={{overflow:"hidden"}}>
-      <dt class="lineLabel">Park:</dt>
-      <dd><ul class="line">{from("Task t").where("t.line=nil").map(Task)}
-      </ul></dd>
-    </dl>
-  )
+  return <div style={{overflow:"hidden"}}>
+      <span class="lineLabel">Park:</span>
+      <div class="line">{from("Task t").where("t.line=nil").map(Task)}
+      </div>
+    </div>
+  
 }
 
 function Task(data){
-  return <li class="task" >
+  console.log(data("t.customer"));
+  let left = "100" + "px";
+  return <li class="task" style={{left: left}} >
     {data("t.customer")} : {data("t.days")}
   </li>
 }
