@@ -45,10 +45,18 @@ function Park (props) {
 }
 
 function Task(data){
-  console.log(data("t.customer"));
-  let left = "100" + "px";
-  return <div class="task" style={{left: left}} >
-    {data("t.customer")} : {data("t.days")}
+  
+  let startDateMillis = data("t.startDate");
+  let firstDate = new Date("01/01/2021 00:00:00");
+  let firstDateMillis =  firstDate.getTime(); 
+  let differenceMillis = startDateMillis - firstDateMillis;
+  let differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
+
+  let width = data("t.days") + "px";
+  
+  let left = differenceDays.toString() + "px";
+  return <div class="task" style={{left: left, width: width}} >
+    {data("t.customer")} 
   </div>
 }
 
