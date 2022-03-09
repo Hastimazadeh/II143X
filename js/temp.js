@@ -104,7 +104,7 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")}/></td>
+          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e, data("t"), "customer")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
           <td> <input type="text"  style={{font:"inherit"}} size="5" value={data("t.days")}/> </td>
@@ -116,4 +116,14 @@ function Table(props){
   )
 
 }
-//style={{position:"absolute"}}
+
+
+function sync(e,d,s) {
+ 
+  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
+    method: 'POST',
+    body: "object="+d+"&type=Task&path="+s+"&value="+e+"&exprType=java.lang.String"
+  });
+  return response; // parses JSON response into native JavaScript objects
+}
+
