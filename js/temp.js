@@ -103,10 +103,10 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e, data("t"), "customer")}/></td>
+          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"), "customer", "String")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> <input type="text"  style={{font:"inherit"}} size="5" value={data("t.days")}/> </td>
+          <td> <input type="text"  style={{font:"inherit"}} size="5" value={data("t.days") } onInput={e=>sync(e.target.value, data("t"), "days", "Integer")}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
@@ -116,12 +116,13 @@ function Table(props){
 }
 
 
-function sync(e,d,s) {
- 
+function sync(e,d,s,p) {
   const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
     method: 'POST',
-    body: "object="+d+"&type=Task&path="+s+"&value="+e+"&exprType=java.lang.String"
+    body: "object="+d+"&type=Task&path="+s+"&value="+e+"&exprType=java.lang."+p
   });
-  return response; // parses JSON response into native JavaScript objects
+  return response; 
 }
+
+
 
