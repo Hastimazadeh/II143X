@@ -27,7 +27,7 @@ function Temp (props){
 function representLine(data){
   return <div style={{overflow:"hidden"}} >
     <span  class="lineLabel">{data("line.name")}</span>
-    <div class="line" >{from("Task t").where("t.line=line").map(Task)}
+    <div class="line" onDragEnd={()=>{DnD(data("line"), response)}} >{from("Task t").where("t.line=line").map(Task)}
     </div>
   </div>
 }
@@ -43,23 +43,26 @@ function Park(props) {
 }
 
 function Task(data){
-  let startDateMillis = data("t.startDate");
-  let firstDate = new Date("01/01/2021 00:00:00");
-  let firstDateMillis =  firstDate.getTime(); 
-  let differenceMillis = startDateMillis - firstDateMillis;
-  let differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
+  const startDateMillis = data("t.startDate");
+  const firstDate = new Date("01/01/2021 00:00:00");
+  const firstDateMillis =  firstDate.getTime(); 
+  const differenceMillis = startDateMillis - firstDateMillis;
+  const differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
 
-  let width = data("t.days") + "px";
-  let left = differenceDays.toString() + "px";
+  //console.log(differenceDays)
+  
 
-  return <div class="task" style={{left: left, width: width ,display:"inline"}}>
+  const width = data("t.days") + "px";
+  const left = differenceDays.toString() + "px";
+   
+  return <div class="task" draggable="true" onDrag={()=>StartDrag(data("t"))}  style={{left: left, width: width ,display:"inline"}}>
     {data("t.customer")} 
   </div>
 }
 
 function TaskPark(data){
   let parkWidth = data("t.days") + "px";
-  return <div class="task" style={{  width: parkWidth , position:"relative" }}> 
+  return <div class="task" draggable="true" style={{  width: parkWidth , position:"relative" }}> 
     {data("t.customer")} 
   </div>
 }
@@ -103,10 +106,10 @@ function Table(props){
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
         <tr>  
-          <td> <input type="text"  style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"), "customer", "String")}/></td>
+          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"),"customer","String")}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> <input type="text"  style={{font:"inherit"}} size="5" value={data("t.days") } onInput={e=>sync(e.target.value, data("t"), "days", "Integer")}/> </td>
+          <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={e=>sync(e.target.value, data("t"),"days","Integer")}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
@@ -114,7 +117,6 @@ function Table(props){
     </table>
   )
 }
-
 
 function sync(e,d,s,p) {
   const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
@@ -124,5 +126,23 @@ function sync(e,d,s,p) {
   return response; 
 }
 
+//DnD will be used like this:
+//DnD(differenceDays,data("t"), data("line"))
+//onDrag={()=>{DnD(data("line"), data("t"))}}
+//onDrag={(d,l)=>{DnD(d.target.value/*differenceDays*/,data("t"), data("line"))}}
+//just dont know what to put for "onInput" instead
 
 
+function DnD(line,t){
+  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
+    method: "POST",
+    body: 
+    "updateFrom=Task%20t%2C%20ProductionLine%20line&updateSet=t.line%3Dline%2C%20t.startDate%3DdateAdd('2021-01-01'%2C%20%3Ax%2C%20'day')&updateWhere=t%3D%3At%20AND%20line%3D%3Aline&param=%7B%22t%22%3A%22"+t+"%22%2C%22line%22%3A%22"+line+"%22%2C%22x%22%3A284%7D"
+  });
+  return response;
+}
+
+function StartDrag(t){
+  response = t;
+  return response;
+}
