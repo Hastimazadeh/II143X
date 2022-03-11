@@ -15,7 +15,7 @@ function Temp (props){
 
   return (
     <React.Fragment>
-      <div>{
+      <div >{
         from("ProductionLine line").map(representLine)
       }</div>
       <Park />
@@ -24,10 +24,13 @@ function Temp (props){
   )
 }
 
+//var global = "";
+
 function representLine(data){
   return <div style={{overflow:"hidden"}} >
     <span  class="lineLabel">{data("line.name")}</span>
-    <div class="line" onDragEnd={()=>{DnD(data("line"), response)}} >{from("Task t").where("t.line=line").map(Task)}
+    <div class="line"  onDragOver={e=> e.preventDefault()} onDrop={e=>{DnD(data("line"), e.dataTransfer.getData("text"))}}>
+        {from("Task t").where("t.line=line").map(Task)}
     </div>
   </div>
 }
@@ -55,7 +58,7 @@ function Task(data){
   const width = data("t.days") + "px";
   const left = differenceDays.toString() + "px";
    
-  return <div class="task" draggable="true" onDrag={()=>StartDrag(data("t"))}  style={{left: left, width: width ,display:"inline"}}>
+  return <div class="task" draggable="true" onDragStart={e=>{e.dataTransfer.setData("text", data("t").toString())}}  style={{left: left, width: width ,display:"inline"}}>
     {data("t.customer")} 
   </div>
 }
@@ -142,7 +145,6 @@ function DnD(line,t){
   return response;
 }
 
-function StartDrag(t){
-  response = t;
-  return response;
-}
+// function StartDrag(t){
+//   global=t;
+// }
