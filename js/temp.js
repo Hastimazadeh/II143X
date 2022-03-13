@@ -11,8 +11,6 @@ function Temp (props){
     }, 1000);
   }, []);
 
-   
-
   return (
     <React.Fragment>
       <div >{
@@ -23,8 +21,6 @@ function Temp (props){
     </React.Fragment>
   )
 }
-
-//var global = "";
 
 function representLine(data){
   return <div style={{overflow:"hidden"}} >
@@ -38,7 +34,7 @@ function representLine(data){
 function Park(props) {
   return <div style={{overflow:"hidden"}}>
       <span class="lineLabel">Park</span>
-      <div class="line">
+      <div class="line" onDragOver={e=> e.preventDefault()} onDrop={e=>{DnDPark( e.dataTransfer.getData("text"))}}>
           {from("Task t").where("t.line=nil").map(TaskPark)} 
       </div>
     </div>
@@ -52,9 +48,6 @@ function Task(data){
   const differenceMillis = startDateMillis - firstDateMillis;
   const differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
 
-  //console.log(differenceDays)
-  
-
   const width = data("t.days") + "px";
   const left = differenceDays.toString() + "px";
    
@@ -65,7 +58,7 @@ function Task(data){
 
 function TaskPark(data){
   let parkWidth = data("t.days") + "px";
-  return <div class="task" draggable="true" style={{  width: parkWidth , position:"relative" }}> 
+  return <div class="task" draggable="true" onDragStart={e=>{e.dataTransfer.setData("text", data("t").toString())}} style={{  width: parkWidth , position:"relative" }}> 
     {data("t.customer")} 
   </div>
 }
@@ -129,13 +122,6 @@ function sync(e,d,s,p) {
   return response; 
 }
 
-//DnD will be used like this:
-//DnD(differenceDays,data("t"), data("line"))
-//onDrag={()=>{DnD(data("line"), data("t"))}}
-//onDrag={(d,l)=>{DnD(d.target.value/*differenceDays*/,data("t"), data("line"))}}
-//just dont know what to put for "onInput" instead
-
-
 function DnD(line,t){
   const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
     method: "POST",
@@ -145,6 +131,10 @@ function DnD(line,t){
   return response;
 }
 
-// function StartDrag(t){
-//   global=t;
-// }
+function DnDPark(t){
+  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
+    method: "POST",
+    body: "updateFrom=Task%20t&updateSet=t.line%3Dnil%2C%20t.startDate%3Dnil&updateWhere=t%3D%3At&param=%7B%22t%22%3A%22"+t+"%22%7D"
+  });  
+  return response;
+}
