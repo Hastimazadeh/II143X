@@ -3,10 +3,16 @@
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.js"></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.4/umd/react.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.4/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
     <script>
       const h= React.createElement;
+      React.createElement=  function(tag, props, ...children){
+        if (tag == "input")
+          props.something="blabla";
+        console.log(tag, props);
+        return h(tag, props, ...children);
+      }
       const Fragment=React.Fragment;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
