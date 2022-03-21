@@ -23,11 +23,11 @@
     return <div style={{overflow:"hidden"}} >
       <span  class="lineLabel">{data("line.name")}</span>
       <div class="line"  
-          onDragOver={(e)=> {e.preventDefault() }} 
-          onDrop={(e)=>{
+          ondragover={(e)=> {e.preventDefault() }} 
+          ondrop={(e)=>{
             e.preventDefault();
             if(e.nativeEvent) e= e.nativeEvent;
-            DnD( data("line"), e.dataTransfer.getData("task") ,  e.nativeEvent.offsetX-e.dataTransfer.getData("dx") )
+            DnD( data("line"), e.dataTransfer.getData("task") , e.offsetX-e.dataTransfer.getData("dx") )
           }}>
           {from("Task t").where("t.line=line").map(Task)}
       </div>
@@ -37,8 +37,8 @@
   function Park(props) {
     return <div style={{overflow:"hidden"}}>
         <span class="lineLabel">Park</span>
-        <div class="line" onDragOver={e=> e.preventDefault()} 
-                          onDrop={e=>{DnDPark( e.dataTransfer.getData("task"))}}>
+        <div class="line" ondragover={e=> e.preventDefault()} 
+                          ondrop={e=>{DnDPark( e.dataTransfer.getData("task"))}}>
           {from("Task t").where("t.line=nil").map(TaskPark)} 
         </div>
       </div>
@@ -56,10 +56,10 @@
     const left = differenceDays.toString() + "px";
      
     return <div class="task" draggable="true" 
-      onDragStart={(e)=>{ 
+      ondragstart={(e)=>{ 
         if(e.nativeEvent) e= e.nativeEvent;
         e.dataTransfer.setData("task", data("t").toString());
-        e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
+        e.dataTransfer.setData("dx", e.offsetX);
       }}
       style={{left: left, width: width ,display:"inline"}}>
       {data("t.customer")} 
@@ -69,10 +69,10 @@
   function TaskPark(data){
     let parkWidth = data("t.days") + "px";
     return <div class="task" draggable="true" 
-    onDragStart={(e)=>{ 
+    ondragstart={(e)=>{ 
         if(e.nativeEvent) e= e.nativeEvent;
         e.dataTransfer.setData("task", data("t").toString());
-        e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
+        e.dataTransfer.setData("dx", e.offsetX);
     }}
      style={{ width: parkWidth , position:"relative" }}> 
       {data("t.customer")} 
@@ -118,11 +118,11 @@
   
         <tbody > {from("Task t").orderBy("t.startDate").map(data=>
           <tr>  
-            <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"),"customer","String")}/></td>
-            <td> {data("t.line.name")} </td>
-            <td> {<StartDate millis={data("t.startDate")}/>} </td>
-            <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={e=>sync(e.target.value, data("t"),"days","Integer")}/> </td>
-            <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
+          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"),"customer","String")}/></td>
+          <td> {data("t.line.name")} </td>
+          <td> {<StartDate millis={data("t.startDate")}/>} </td>
+          <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={e=>sync(e.target.value, data("t"),"days","Integer")}/> </td>
+          <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
           </tr>
           )}
         </tbody>

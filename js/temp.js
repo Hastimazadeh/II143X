@@ -26,6 +26,7 @@ function representLine(data){
         onDragOver={(e)=> {e.preventDefault() }} 
         onDrop={(e)=>{
           e.preventDefault();
+          //if(e.nativeEvent) e= e.nativeEvent;
           DnD( data("line"), e.dataTransfer.getData("task") , e.nativeEvent.offsetX-e.dataTransfer.getData("dx") )
         }}>
         {from("Task t").where("t.line=line").map(Task)}
@@ -55,10 +56,11 @@ function Task(data){
   const left = differenceDays.toString() + "px";
    
   return <div class="task" draggable="true" 
-    onDragStart={(e)=>{ 
-      e.dataTransfer.setData("task", data("t").toString());
-      e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
-    }}
+  onDragStart={(e)=>{ 
+    //if(e.nativeEvent) e= e.nativeEvent;
+    e.dataTransfer.setData("task", data("t").toString());
+    e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
+  }}
     style={{left: left, width: width ,display:"inline"}}>
     {data("t.customer")} 
   </div>
@@ -68,9 +70,10 @@ function TaskPark(data){
   let parkWidth = data("t.days") + "px";
   return <div class="task" draggable="true" 
   onDragStart={(e)=>{ 
+    //if(e.nativeEvent) e= e.nativeEvent;
     e.dataTransfer.setData("task", data("t").toString());
     e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
-  }}
+}}
    style={{ width: parkWidth , position:"relative" }}> 
     {data("t.customer")} 
   </div>
