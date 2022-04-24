@@ -21,6 +21,7 @@ let queryState={
         this.queryDiscovery=null;
         this.queryDirty=null;
         this.data=null;
+        this.metaData=null;
     },
     
     findQuery(q){
@@ -105,13 +106,15 @@ class Query{
         }
         return ret;
     }
-    
+
     async runQueries(func){
         let result;
         do{
             this.queryState.dirty=false;
             this.queryState.queryDirty=false;
-            this.queryState.data= (await hitDatabase(this.queryState.queries)).resultData;
+            const apiResult= await hitDatabase(this.queryState.queries);
+            this.queryState.data= apiResult.resultData;
+            this.queryState.metaData= apiResult.results;
             // promise is fulfilled, we iterate to completion
             queryState=this.queryState;
             result= this.iterate(func, queryState, 0);
@@ -129,6 +132,15 @@ class Query{
                 qs.data=d;
                 qs.parent=queryIndex;
                 return func(Mak.variableExpr=function(proj){
+                    Mak.lastProj= proj;
+                    Mak.lastType= qs.metaData[queryIndex].columnType[qs.metaData[queryIndex].columnIndex[proj]];
+                    const dot= proj.indexOf(".");
+                    if(dot!=-1){
+                        Mak.lastObjLabel= proj.slice(0, dot);
+                        Mak.lastObj= d[Mak.lastObjLabel];
+                        Mak.lastObjType= qs.metaData[queryIndex].columnType[qs.metaData[queryIndex].columnIndex[Mak.lastObjLabel]];
+                        Mak.lastPath= proj.slice(dot+1);
+                    }
                     // TODO: dirty
                     return d[proj];
                 }, i, arr);           
@@ -152,14 +164,32 @@ class Query{
         }
         else return this.iterate(func, qs, queryIndex);
     }
+    
 }
+
 
 const Mak={
     addObserver(o){ this.subscribers= this.subscribers?[...this.subscribers, o]:[o]; return ()=>this.removeObserver(o); },
     removeObserver(o){ this.subscribers= this.subscribers.filter(x=>x!=o);},
     sync(){ this.subscribers && this.subscribers.forEach(o=>o());},
-    expr(expr){return this.variableExpr(expr);}
+    expr(expr){return this.variableExpr(expr);},
 };
+
+
+function sync(){
+    const expr= Mak.lastProj;
+    const type= Mak.lastType;
+    const obj= Mak.lastObj;
+    const path= Mak.lastPath;
+    const objType= Mak.lastObjType&&  Mak.lastObjType.slice(4);
+    return function(e){
+        return fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
+            method: 'POST',
+            body: "object="+obj+"&type="+objType+"&path="+path+"&value="+e.target.value+"&exprType="+type
+        }).then(()=>{Mak.sync();});
+        
+    };
+}
 
 function RenderPromiseReact({promise, loading}){
     const [data, setData]=React.useState();
