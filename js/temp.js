@@ -140,7 +140,7 @@ function DnD(line,t,x){
         updateWhere:'t=:t AND line=:line',
         param:JSON.stringify({t,line,x})
       })
-  }).then(()=>{Mak.sync()});
+  }).then(()=>{Mak.sync();});
   return response;
 }
 
@@ -149,6 +149,6 @@ function DnDPark(t){
   const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
     method: "POST",
     body: "updateFrom=Task%20t&updateSet=t.line%3Dnil%2C%20t.startDate%3Dnil&updateWhere=t%3D%3At&param=%7B%22t%22%3A%22"+t+"%22%7D"
-  });  
+  }).then(()=>{Mak.sync();});  
   return response;
 }
