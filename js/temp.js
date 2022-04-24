@@ -5,7 +5,7 @@ function Temp (props){
   React.useEffect(() => {
     setInterval(() => {
       //setCount(prevCount => prevCount + 1);
-      Mak.sync();
+//      Mak.sync();
     }, 1000);
   }, []);
   return (
@@ -16,11 +16,11 @@ function Temp (props){
       <Park />
       <Table/>
     </React.Fragment>
-  )
+  );
 }
 
 function representLine(data){
-  return <div style={{overflow:"hidden"}} >
+    return <div key={data("line")} style={{overflow:"hidden"}} >
     <span  class="lineLabel">{data("line.name")}</span>
     <div class="line"  
         onDragOver={(e)=> {e.preventDefault() }} 
@@ -31,7 +31,7 @@ function representLine(data){
         }}>
         {from("Task t").where("t.line=line").map(Task)}
     </div>
-  </div>
+   </div>;
 }
 
 function Park(props) {
@@ -41,7 +41,7 @@ function Park(props) {
                         onDrop={e=>{DnDPark( e.dataTransfer.getData("task"))}}>
         {from("Task t").where("t.line=nil").map(TaskPark)} 
       </div>
-    </div>
+   </div>;
   
 }
 
@@ -55,7 +55,7 @@ function Task(data){
   const width = data("t.days") + "px";
   const left = differenceDays.toString() + "px";
    
-  return <div class="task" draggable="true" 
+    return <div key={data("t")} class="task" draggable="true" 
   onDragStart={(e)=>{ 
     //if(e.nativeEvent) e= e.nativeEvent;
     e.dataTransfer.setData("task", data("t").toString());
@@ -63,12 +63,12 @@ function Task(data){
   }}
     style={{left: left, width: width ,display:"inline"}}>
     {data("t.customer")} 
-  </div>
+   </div>;
 }
 
 function TaskPark(data){
   let parkWidth = data("t.days") + "px";
-  return <div class="task" draggable="true" 
+    return <div key={data("t")} class="task" draggable="true" 
   onDragStart={(e)=>{ 
     //if(e.nativeEvent) e= e.nativeEvent;
     e.dataTransfer.setData("task", data("t").toString());
@@ -76,11 +76,11 @@ function TaskPark(data){
 }}
    style={{ width: parkWidth , position:"relative" }}> 
     {data("t.customer")} 
-  </div>
+  </div>;
 }
 
 function StartDate(props){
-  const date = new Date(props.millis)
+  const date = new Date(props.millis);
   if(date.toString().slice(0,15)=="Invalid Date") 
     return <span> </span>;
   else
@@ -92,7 +92,7 @@ function StartDate(props){
 }
 
 function EndDate(props){
-  const date = new Date(props.millis+ (props.days)*86400000)  
+  const date = new Date(props.millis+ (props.days)*86400000) ;
   if(date.toString().slice(0,15)=="Invalid Date") 
     return <span> </span>;
   else
@@ -100,7 +100,7 @@ function EndDate(props){
       <span>
         {date.toString().slice(0,15)}
       </span>
-    )
+    );
 }
 
 function Table(props){
@@ -117,25 +117,17 @@ function Table(props){
       </thead> 
 
       <tbody > {from("Task t").orderBy("t.startDate").map(data=>
-        <tr>  
-          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={e=>sync(e.target.value, data("t"),"customer","String")}/></td>
+          <tr key={data("t")}>  
+          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
-          <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={e=>sync(e.target.value, data("t"),"days","Integer")}/> </td>
+          <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={sync()}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
         </tr>
         )}
       </tbody>
     </table>
-  )
-}
-
-function sync(e,d,s,p) {
-  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
-    method: 'POST',
-    body: "object="+d+"&type=Task&path="+s+"&value="+e+"&exprType=java.lang."+p
-  }).then(()=>{Mak.sync()});
-  return response; 
+  );
 }
 
 function DnD(line,t,x){
