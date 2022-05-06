@@ -6,7 +6,6 @@
     text-align:center;
     color:red;
     cursor:move;
-    position:absolute; /*overlapping*/
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     height:21px;
   }

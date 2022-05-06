@@ -46,22 +46,16 @@ function Park(props) {
 }
 
 function Task(data){
-  const startDateMillis = data("t.startDate");//
-  const firstDate = new Date("01/01/2021 00:00:00");
-  const firstDateMillis =  firstDate.getTime(); //
-  const differenceMillis = startDateMillis - firstDateMillis;
-  const differenceDays = Math.round((differenceMillis)/(1000*60*60*24));
-
-  const width = data("t.days") + "px";
-  const left = differenceDays.toString() + "px";
-   
     return <div key={data("t")} class="task" draggable="true" 
   onDragStart={(e)=>{ 
     //if(e.nativeEvent) e= e.nativeEvent;
     e.dataTransfer.setData("task", data("t").toString());
     e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
   }}
-    style={{left: left, width: width ,display:"inline"}}>
+    style={{left: data("datediff(t.startDate,'2021-01-01')")+"px",
+            width: data("t.days") + "px",
+            position: "absolute"
+           }}>
     {data("t.customer")} 
    </div>;
 }
@@ -74,7 +68,7 @@ function TaskPark(data){
     e.dataTransfer.setData("task", data("t").toString());
     e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
 }}
-   style={{ width: parkWidth , position:"relative" }}> 
+   style={{ width: parkWidth }}> 
     {data("t.customer")} 
   </div>;
 }
@@ -116,10 +110,10 @@ function Table(props){
         </tr>
       </thead> 
 
-      <tbody > {from("Task t").orderBy("t.startDate").map(data=>
-          <tr key={data("t")}>  
-          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
-          <td> {data("t.line.name")} </td>
+      <tbody >{from("Task t").orderBy("t.startDate").map(data=>
+          <tr key={data("t")}>
+            <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
+           <td> {data("t.line.name")} </td>
           <td> {<StartDate millis={data("t.startDate")}/>} </td>
           <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={sync()}/> </td>
           <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
@@ -136,7 +130,7 @@ function DnD(line,t,x){
     body: 
       new URLSearchParams({
         updateFrom:"Task t, ProductionLine line",
-        updateSet: "t.line=line, t.startDate=dateAdd('2021-01-01', :x, 'day')",
+          updateSet: "t.line=line, t.startDate=dateAdd('2021-01-01', :x, 'day')",
         updateWhere:'t=:t AND line=:line',
         param:JSON.stringify({t,line,x})
       })
