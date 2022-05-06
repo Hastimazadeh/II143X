@@ -61,40 +61,19 @@ function Task(data){
 }
 
 function TaskPark(data){
-  let parkWidth = data("t.days") + "px";
     return <div key={data("t")} class="task" draggable="true" 
   onDragStart={(e)=>{ 
     //if(e.nativeEvent) e= e.nativeEvent;
     e.dataTransfer.setData("task", data("t").toString());
     e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
 }}
-   style={{ width: parkWidth }}> 
+   style={{ width: data("t.days") + "px" }}> 
     {data("t.customer")} 
   </div>;
 }
 
-function StartDate(props){
-  const date = new Date(props.millis);
-  if(date.toString().slice(0,15)=="Invalid Date") 
-    return <span> </span>;
-  else
-    return(
-      <span>
-        {date.toString().slice(0,15)}
-      </span>
-    )
-}
-
-function EndDate(props){
-  const date = new Date(props.millis+ (props.days)*86400000) ;
-  if(date.toString().slice(0,15)=="Invalid Date") 
-    return <span> </span>;
-  else
-    return(
-      <span>
-        {date.toString().slice(0,15)}
-      </span>
-    );
+function dateToString(millis){
+    return millis? new Date(millis).toString().slice(0,15):"";
 }
 
 function Table(props){
@@ -112,11 +91,11 @@ function Table(props){
 
       <tbody >{from("Task t").orderBy("t.startDate").map(data=>
           <tr key={data("t")}>
-            <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
-           <td> {data("t.line.name")} </td>
-          <td> {<StartDate millis={data("t.startDate")}/>} </td>
+          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
+          <td> {data("t.line.name")} </td>
+          <td>{ dateToString(data("t.startDate"))} </td>
           <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={sync()}/> </td>
-          <td> {<EndDate millis={data("t.startDate")} days={data("t.days")}/>} </td>
+          <td>{ dateToString(data("dateAdd(t.startDate, t.days, 'day')"))} </td>
         </tr>
         )}
       </tbody>
