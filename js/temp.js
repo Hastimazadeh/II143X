@@ -21,40 +21,39 @@ function Temp (props){
 
 function representLine(data){
     return <div key={data("line")} style={{overflow:"hidden"}} >
-    <span  class="lineLabel">{data("line.name")}</span>
-    <div class="line" onDragOver={e=> e.preventDefault()}  onDrop={drop()}>
-        {from("Task t").where("t.line=line").map(Task)}
-    </div>
-   </div>;
+             <span  class="lineLabel">{data("line.name")}</span>
+             <div class="line" onDragOver={e=> e.preventDefault()}  onDrop={drop()}>
+               {from("Task t").where("t.line=line").map(Task)}
+             </div>
+           </div>;
 }
 
 function Park(props) {
-  return <div style={{overflow:"hidden"}}>
-      <span class="lineLabel">Park</span>
-      <div class="line" onDragOver={e=> e.preventDefault()} onDrop={drop()}>
-        {from("Task t").where("t.line=nil").map(TaskPark)} 
-      </div>
-   </div>;
-  
+    return <div style={{overflow:"hidden"}}>
+             <span class="lineLabel">Park</span>
+             <div class="line" onDragOver={e=> e.preventDefault()} onDrop={drop()}>
+               {from("Task t").where("t.line=nil").map(TaskPark)} 
+             </div>
+           </div>;
 }
 
 function Task(data){
     return <div key={data("t")} class="task" draggable="true" 
                 onDragStart={drag("t")}
-    style={{left: data("datediff(t.startDate,'2021-01-01')")+"px",
-            width: data("t.days") + "px",
-            position: "absolute"
-           }}>
-    {data("t.customer")} 
-   </div>;
+                style={{left: data("datediff(t.startDate,'2021-01-01')")+"px",
+                        width: data("t.days") + "px",
+                        position: "absolute"
+                       }}>
+             {data("t.customer")} 
+           </div>;
 }
 
 function TaskPark(data){
     return <div key={data("t")} class="task" draggable="true" 
                 onDragStart={drag("t")}
-   style={{ width: data("t.days") + "px" }}> 
-    {data("t.customer")} 
-  </div>;
+                style={{ width: data("t.days") + "px" }}> 
+             {data("t.customer")} 
+           </div>;
 }
 
 function dateToString(millis){
