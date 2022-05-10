@@ -22,13 +22,7 @@ function Temp (props){
 function representLine(data){
     return <div key={data("line")} style={{overflow:"hidden"}} >
     <span  class="lineLabel">{data("line.name")}</span>
-    <div class="line"  
-        onDragOver={(e)=> {e.preventDefault() }} 
-        onDrop={(e)=>{
-          e.preventDefault();
-          //if(e.nativeEvent) e= e.nativeEvent;
-          DnD( data("line"), e.dataTransfer.getData("task") , e.nativeEvent.offsetX-e.dataTransfer.getData("dx") )
-        }}>
+    <div class="line" onDragOver={e=> e.preventDefault()}  onDrop={drop()}>
         {from("Task t").where("t.line=line").map(Task)}
     </div>
    </div>;
@@ -37,8 +31,7 @@ function representLine(data){
 function Park(props) {
   return <div style={{overflow:"hidden"}}>
       <span class="lineLabel">Park</span>
-      <div class="line" onDragOver={e=> e.preventDefault()} 
-                        onDrop={e=>{DnDPark( e.dataTransfer.getData("task"))}}>
+      <div class="line" onDragOver={e=> e.preventDefault()} onDrop={drop()}>
         {from("Task t").where("t.line=nil").map(TaskPark)} 
       </div>
    </div>;
@@ -47,11 +40,7 @@ function Park(props) {
 
 function Task(data){
     return <div key={data("t")} class="task" draggable="true" 
-  onDragStart={(e)=>{ 
-    //if(e.nativeEvent) e= e.nativeEvent;
-    e.dataTransfer.setData("task", data("t").toString());
-    e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
-  }}
+                onDragStart={drag("t")}
     style={{left: data("datediff(t.startDate,'2021-01-01')")+"px",
             width: data("t.days") + "px",
             position: "absolute"
@@ -62,11 +51,7 @@ function Task(data){
 
 function TaskPark(data){
     return <div key={data("t")} class="task" draggable="true" 
-  onDragStart={(e)=>{ 
-    //if(e.nativeEvent) e= e.nativeEvent;
-    e.dataTransfer.setData("task", data("t").toString());
-    e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
-}}
+                onDragStart={drag("t")}
    style={{ width: data("t.days") + "px" }}> 
     {data("t.customer")} 
   </div>;
@@ -101,27 +86,4 @@ function Table(props){
       </tbody>
     </table>
   );
-}
-
-function DnD(line,t,x){
-  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
-    method: "POST",
-    body: 
-      new URLSearchParams({
-        updateFrom:"Task t, ProductionLine line",
-          updateSet: "t.line=line, t.startDate=dateAdd('2021-01-01', :x, 'day')",
-        updateWhere:'t=:t AND line=:line',
-        param:JSON.stringify({t,line,x})
-      })
-  }).then(()=>{Mak.sync();});
-  return response;
-}
-
-/* for moving tasks TO the park line */
-function DnDPark(t){
-  const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
-    method: "POST",
-    body: "updateFrom=Task%20t&updateSet=t.line%3Dnil%2C%20t.startDate%3Dnil&updateWhere=t%3D%3At&param=%7B%22t%22%3A%22"+t+"%22%7D"
-  }).then(()=>{Mak.sync();});  
-  return response;
 }

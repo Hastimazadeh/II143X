@@ -66,6 +66,9 @@ class Query{
     
     map(func, qs=queryState){
         this.parent=qs.parent;
+        if(Mak.dropDestination){
+            Mak.dropDestination.calculate(this);
+        }
         let queryIndex= qs.findQuery(this);
         
         if(!queryIndex)
@@ -191,6 +194,15 @@ function sync(){
     };
 }
 
+function drag(label){
+    const obj= Mak.expr(label);
+    return function(e){ 
+        //if(e.nativeEvent) e= e.nativeEvent;
+        e.dataTransfer.setData("object", obj.toString());
+        e.dataTransfer.setData("dx", e.nativeEvent.offsetX);
+    };
+}
+
 function RenderPromiseReact({promise, loading}){
     const [data, setData]=React.useState();
     const [error, setError]=React.useState();
@@ -222,4 +234,39 @@ function toReact(promise, loading){
 }
 function toVue(promise, loading){
     return Vue.h(RenderPromiseVue, {promise, loading});
+}
+
+
+// ---------- mock-up drop
+
+function drop(){
+    let line=null;
+    const box= {
+        calculate(query){
+            if(query.where!= "t.line=nil")
+                line= Mak.lastObj;
+        }
+    };
+    Mak.dropDestination=box;
+    return function(e){
+        e.preventDefault();
+        //if(e.nativeEvent) e= e.nativeEvent;
+        dropMock( line, e.dataTransfer.getData("object") , e.nativeEvent.offsetX-e.dataTransfer.getData("dx") );
+    };  
+}
+function dropMock(line,t,x){
+    const ln= line? ":line": "nil";
+    const startDate= line? "dateAdd('2021-01-01', :x, 'day')" : "nil";
+    
+    const response = fetch("http://standup.csc.kth.se:8080/mak-backend/MakumbaQueryServlet", {
+        method: "POST",
+        body: 
+        new URLSearchParams({
+            updateFrom: "Task t",
+            updateSet: "t.line="+ln+", t.startDate="+ startDate,
+            updateWhere:'t=:t',
+            param: JSON.stringify(line?{t,line,x}:{t})
+        })
+    }).then(()=>{Mak.sync();});
+    return response;
 }
