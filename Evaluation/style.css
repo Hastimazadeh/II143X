@@ -1,0 +1,41 @@
+
+  .task{
+    display:inline-block;
+    border-style:solid;
+    border-width:1px;
+    text-align:center;
+    color:red;
+    cursor:move;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height:21px;
+  }
+
+  .line{
+    float:left;
+    width:80%;
+    height:23px;
+    border-bottom:1px solid black;
+    position:relative;
+    overflow:hidden;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    display: block;
+  }
+  
+  .lineLabel{
+    float:left;
+    width:40px;
+    padding:3px 0px;
+    position:relative;
+    overflow:hidden;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.42857143; 
+    font-size: 14px;
+  }
+
+  .table{
+    border-spacing: 18px 2px;
+    border-collapse: separate;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+
+  }
