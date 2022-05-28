@@ -75,7 +75,7 @@ function Table(props){
 
       <tbody >{from("Task t").orderBy("t.startDate").map(data=>
           <tr key={data("t")}>
-          <td> <input type="text" style={{font:"inherit"}} size="10" value={data("t.customer")} onInput={sync()}/></td>
+          <td> <input type="text" /*style={{font:"inherit"}}*/ size="10" value={data("t.customer")} onInput={sync()}/></td>
           <td> {data("t.line.name")} </td>
           <td>{ dateToString(data("t.startDate"))} </td>
           <td> <input type="text" style={{font:"inherit"}} size="5" value={data("t.days")} onInput={sync()}/> </td>
